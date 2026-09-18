@@ -124,19 +124,21 @@ export default function LanguagesPage() {
                 className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 flex flex-col justify-between space-y-3 shadow-xs hover:border-blue-300 dark:hover:border-slate-700 transition-all group"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <span className="text-3xl shrink-0">{lang.flag}</span>
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/60 flex items-center justify-center text-xl shrink-0 group-hover:scale-105 transition-transform shadow-2xs">
+                      {lang.flag}
+                    </div>
                     <div className="truncate">
                       <h3 className="font-bold text-sm text-slate-900 dark:text-white truncate">
                         {lang.name}
                       </h3>
-                      <p className="text-xs text-slate-400 truncate">
+                      <p className="text-xs text-slate-400 truncate mt-0.5">
                         {lang.nativeName}
                       </p>
                     </div>
                   </div>
 
-                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 uppercase">
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 uppercase font-semibold">
                     {lang.code}
                   </span>
                 </div>
