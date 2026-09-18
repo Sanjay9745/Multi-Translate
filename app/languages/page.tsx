@@ -32,6 +32,7 @@ export default function LanguagesPage() {
     { id: 'middle-eastern', label: 'Middle East 🕌' },
     { id: 'african', label: 'African 🌍' },
     { id: 'americas', label: 'Americas 🌎' },
+    { id: 'historical', label: 'Historical & Ancient 🏛️' },
   ];
 
   const filtered = useMemo(() => {
@@ -74,7 +75,7 @@ export default function LanguagesPage() {
                 Supported Languages
               </h1>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Explore all 60+ supported world languages, native scripts, and voices
+                Explore all supported world languages, regional dialects, classical scripts, and voices
               </p>
             </div>
           </div>

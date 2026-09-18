@@ -41,6 +41,7 @@ export function LanguageSelectorModal({
     { id: 'middle-eastern', label: 'Middle East 🕌' },
     { id: 'african', label: 'African 🌍' },
     { id: 'americas', label: 'Americas 🌎' },
+    { id: 'historical', label: 'Historical & Ancient 🏛️' },
   ];
 
   const filteredLanguages = useMemo(() => {

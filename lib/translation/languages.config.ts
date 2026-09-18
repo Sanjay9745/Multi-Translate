@@ -5,7 +5,7 @@ export interface LanguageInfo {
   flag: string;
   direction: 'ltr' | 'rtl';
   ttsCode: string;
-  category: 'popular' | 'indian' | 'european' | 'asian' | 'middle-eastern' | 'african' | 'americas' | 'other';
+  category: 'popular' | 'indian' | 'european' | 'asian' | 'middle-eastern' | 'african' | 'americas' | 'historical' | 'other';
   popular?: boolean;
 }
 
@@ -92,8 +92,46 @@ export const SUPPORTED_LANGUAGES: LanguageInfo[] = [
   { code: 'fy', name: 'Western Frisian', nativeName: 'Frysk', flag: '🇳🇱', direction: 'ltr', ttsCode: 'nl-NL', category: 'european' },
   { code: 'gd', name: 'Scottish Gaelic', nativeName: 'Gàidhlig', flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', direction: 'ltr', ttsCode: 'en-GB', category: 'european' },
   { code: 'yi', name: 'Yiddish', nativeName: 'ייִדיש', flag: '🇮🇱', direction: 'rtl', ttsCode: 'he-IL', category: 'european' },
-  { code: 'la', name: 'Latin', nativeName: 'Latina', flag: '🇻🇦', direction: 'ltr', ttsCode: 'it-IT', category: 'european' },
   { code: 'eo', name: 'Esperanto', nativeName: 'Esperanto', flag: '🌐', direction: 'ltr', ttsCode: 'es-ES', category: 'european' },
+
+  // European Regional, Minority & Celtic Languages
+  { code: 'fo', name: 'Faroese', nativeName: 'Føroyskt', flag: '🇫🇴', direction: 'ltr', ttsCode: 'fo-FO', category: 'european' },
+  { code: 'sco', name: 'Scots', nativeName: 'Scots', flag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿', direction: 'ltr', ttsCode: 'en-GB', category: 'european' },
+  { code: 'oc', name: 'Occitan', nativeName: 'Occitan', flag: '🇫🇷', direction: 'ltr', ttsCode: 'oc-FR', category: 'european' },
+  { code: 'sc', name: 'Sardinian', nativeName: 'Sardu', flag: '🇮🇹', direction: 'ltr', ttsCode: 'sc-IT', category: 'european' },
+  { code: 'rm', name: 'Romansh', nativeName: 'Rumantsch', flag: '🇨🇭', direction: 'ltr', ttsCode: 'rm-CH', category: 'european' },
+  { code: 'vec', name: 'Venetian', nativeName: 'Vèneto', flag: '🇮🇹', direction: 'ltr', ttsCode: 'vec-IT', category: 'european' },
+  { code: 'scn', name: 'Sicilian', nativeName: 'Sicilianu', flag: '🇮🇹', direction: 'ltr', ttsCode: 'scn-IT', category: 'european' },
+  { code: 'nap', name: 'Neapolitan', nativeName: 'Nnapulitano', flag: '🇮🇹', direction: 'ltr', ttsCode: 'nap-IT', category: 'european' },
+  { code: 'fur', name: 'Friulian', nativeName: 'Furlan', flag: '🇮🇹', direction: 'ltr', ttsCode: 'fur-IT', category: 'european' },
+  { code: 'rup', name: 'Aromanian', nativeName: 'Armãneashti', flag: '🇷🇴', direction: 'ltr', ttsCode: 'rup-RO', category: 'european' },
+  { code: 'ast', name: 'Asturian', nativeName: 'Asturianu', flag: '🇪🇸', direction: 'ltr', ttsCode: 'ast-ES', category: 'european' },
+  { code: 'an', name: 'Aragonese', nativeName: 'Aragonés', flag: '🇪🇸', direction: 'ltr', ttsCode: 'an-ES', category: 'european' },
+  { code: 'wa', name: 'Walloon', nativeName: 'Walon', flag: '🇧🇪', direction: 'ltr', ttsCode: 'wa-BE', category: 'european' },
+  { code: 'pcd', name: 'Picard', nativeName: 'Picard', flag: '🇫🇷', direction: 'ltr', ttsCode: 'pcd-FR', category: 'european' },
+  { code: 'frp', name: 'Franco-Provençal', nativeName: 'Arpitan', flag: '🇫🇷', direction: 'ltr', ttsCode: 'frp-FR', category: 'european' },
+  { code: 'cnr', name: 'Montenegrin', nativeName: 'Crnogorski', flag: '🇲🇪', direction: 'ltr', ttsCode: 'cnr-ME', category: 'european' },
+  { code: 'rue', name: 'Rusyn', nativeName: 'Русиньскый', flag: '🇺🇦', direction: 'ltr', ttsCode: 'rue-UA', category: 'european' },
+  { code: 'csb', name: 'Kashubian', nativeName: 'Kaszëbsczi', flag: '🇵🇱', direction: 'ltr', ttsCode: 'csb-PL', category: 'european' },
+  { code: 'hsb', name: 'Upper Sorbian', nativeName: 'Hornjoserbsce', flag: '🇩🇪', direction: 'ltr', ttsCode: 'hsb-DE', category: 'european' },
+  { code: 'dsb', name: 'Lower Sorbian', nativeName: 'Dolnoserbski', flag: '🇩🇪', direction: 'ltr', ttsCode: 'dsb-DE', category: 'european' },
+  { code: 'br', name: 'Breton', nativeName: 'Brezhoneg', flag: '🇫🇷', direction: 'ltr', ttsCode: 'br-FR', category: 'european' },
+  { code: 'kw', name: 'Cornish', nativeName: 'Kernewek', flag: '🇬🇧', direction: 'ltr', ttsCode: 'kw-GB', category: 'european' },
+  { code: 'gv', name: 'Manx', nativeName: 'Gaelg', flag: '🇮🇲', direction: 'ltr', ttsCode: 'gv-IM', category: 'european' },
+  { code: 'se', name: 'Northern Sámi', nativeName: 'Davvisámegiella', flag: '🇳🇴', direction: 'ltr', ttsCode: 'se-NO', category: 'european' },
+  { code: 'sma', name: 'Southern Sámi', nativeName: 'Åarjelsaemien', flag: '🇳🇴', direction: 'ltr', ttsCode: 'sma-NO', category: 'european' },
+  { code: 'smn', name: 'Inari Sámi', nativeName: 'Anarâškielâ', flag: '🇫🇮', direction: 'ltr', ttsCode: 'smn-FI', category: 'european' },
+  { code: 'sms', name: 'Skolt Sámi', nativeName: 'Sääʹmǩiõll', flag: '🇫🇮', direction: 'ltr', ttsCode: 'sms-FI', category: 'european' },
+  { code: 'fkv', name: 'Kven', nativeName: 'Kainun kieli', flag: '🇳🇴', direction: 'ltr', ttsCode: 'fkv-NO', category: 'european' },
+  { code: 'fit', name: 'Meänkieli', nativeName: 'Meänkieli', flag: '🇸🇪', direction: 'ltr', ttsCode: 'fit-SE', category: 'european' },
+  { code: 'rom', name: 'Romani', nativeName: 'Romani čhib', flag: '🌐', direction: 'ltr', ttsCode: 'ro-RO', category: 'european' },
+  { code: 'os', name: 'Ossetian', nativeName: 'Ирон', flag: '🇷🇺', direction: 'ltr', ttsCode: 'os-RU', category: 'european' },
+  { code: 'ba', name: 'Bashkir', nativeName: 'Башҡортса', flag: '🇷🇺', direction: 'ltr', ttsCode: 'ba-RU', category: 'european' },
+  { code: 'cv', name: 'Chuvash', nativeName: 'Чӑвашла', flag: '🇷🇺', direction: 'ltr', ttsCode: 'cv-RU', category: 'european' },
+  { code: 'gag', name: 'Gagauz', nativeName: 'Gagauzça', flag: '🇲🇩', direction: 'ltr', ttsCode: 'tr-TR', category: 'european' },
+  { code: 'crh', name: 'Crimean Tatar', nativeName: 'Qırımtatarca', flag: '🇺🇦', direction: 'ltr', ttsCode: 'tr-TR', category: 'european' },
+  { code: 'kum', name: 'Kumyk', nativeName: 'Къумукъ', flag: '🇷🇺', direction: 'ltr', ttsCode: 'kum-RU', category: 'european' },
+  { code: 'krc', name: 'Karachay-Balkar', nativeName: 'Къарачай-малкъар', flag: '🇷🇺', direction: 'ltr', ttsCode: 'krc-RU', category: 'european' },
 
   // ==========================================
   // ASIAN & PACIFIC LANGUAGES
@@ -167,6 +205,18 @@ export const SUPPORTED_LANGUAGES: LanguageInfo[] = [
   { code: 'qu', name: 'Quechua', nativeName: 'Runa Simi', flag: '🇵🇪', direction: 'ltr', ttsCode: 'es-ES', category: 'americas' },
   { code: 'gn', name: 'Guarani', nativeName: "Avañe'ẽ", flag: '🇵🇾', direction: 'ltr', ttsCode: 'es-ES', category: 'americas' },
   { code: 'ay', name: 'Aymara', nativeName: 'Aymar aru', flag: '🇧🇴', direction: 'ltr', ttsCode: 'es-ES', category: 'americas' },
+
+  // ==========================================
+  // HISTORICAL & ANCIENT LANGUAGES
+  // ==========================================
+  { code: 'la', name: 'Latin', nativeName: 'Latina', flag: '🇻🇦', direction: 'ltr', ttsCode: 'it-IT', category: 'historical' },
+  { code: 'grc', name: 'Ancient Greek', nativeName: 'Ἑλληνική (Ἀρχαία)', flag: '🏛️', direction: 'ltr', ttsCode: 'el-GR', category: 'historical' },
+  { code: 'cu', name: 'Old Church Slavonic', nativeName: 'Словѣньскъ', flag: '📜', direction: 'ltr', ttsCode: 'ru-RU', category: 'historical' },
+  { code: 'got', name: 'Gothic', nativeName: 'Gutisko', flag: '🛡️', direction: 'ltr', ttsCode: 'de-DE', category: 'historical' },
+  { code: 'non', name: 'Old Norse', nativeName: 'Dǫnsk tunga', flag: '⚔️', direction: 'ltr', ttsCode: 'is-IS', category: 'historical' },
+  { code: 'ang', name: 'Old English', nativeName: 'Ænglisc', flag: '📜', direction: 'ltr', ttsCode: 'en-GB', category: 'historical' },
+  { code: 'sga', name: 'Old Irish', nativeName: 'Goídelc', flag: '☘️', direction: 'ltr', ttsCode: 'ga-IE', category: 'historical' },
+  { code: 'xcl', name: 'Classical Armenian', nativeName: 'Գրաբար', flag: '📜', direction: 'ltr', ttsCode: 'hy-AM', category: 'historical' },
 ];
 
 export const AUTO_DETECT_LANGUAGE: LanguageInfo = {
@@ -227,5 +277,23 @@ export const LANGUAGE_PRESETS = [
     name: 'African',
     icon: '🌍',
     languages: ['sw', 'am', 'yo', 'ig', 'ha', 'zu', 'xh', 'af', 'so'],
+  },
+  {
+    id: 'celtic',
+    name: 'Celtic',
+    icon: '☘️',
+    languages: ['ga', 'gd', 'cy', 'br', 'kw', 'gv'],
+  },
+  {
+    id: 'nordic',
+    name: 'Nordic & Sámi',
+    icon: '❄️',
+    languages: ['sv', 'da', 'no', 'is', 'fo', 'fi', 'se'],
+  },
+  {
+    id: 'ancient-classical',
+    name: 'Ancient & Classical',
+    icon: '🏛️',
+    languages: ['la', 'grc', 'cu', 'got', 'non', 'ang', 'sga', 'xcl', 'sa'],
   },
 ];

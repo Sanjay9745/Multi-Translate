@@ -127,13 +127,28 @@ export class TranslationService {
           ]);
         } catch (primErr) {
           console.warn(`Primary provider failed for ${targetLang}, trying fallback...`, primErr);
-          // Try fallback provider
-          translatedText = await Promise.race([
-            fallbackProvider.translate(text, effectiveSourceLang, targetLang),
-            new Promise<string>((_, reject) =>
-              setTimeout(() => reject(new Error('Fallback timeout')), 6000)
-            ),
-          ]);
+          try {
+            // Try fallback provider (e.g. MyMemory)
+            translatedText = await Promise.race([
+              fallbackProvider.translate(text, effectiveSourceLang, targetLang),
+              new Promise<string>((_, reject) =>
+                setTimeout(() => reject(new Error('Fallback timeout')), 6000)
+              ),
+            ]);
+          } catch (fallbackErr) {
+            console.warn(`Fallback provider failed for ${targetLang}, trying AI provider...`, fallbackErr);
+            const aiProvider = this.providers.get('ai');
+            if (aiProvider && aiProvider !== provider) {
+              translatedText = await Promise.race([
+                aiProvider.translate(text, effectiveSourceLang, targetLang),
+                new Promise<string>((_, reject) =>
+                  setTimeout(() => reject(new Error('AI timeout')), 8000)
+                ),
+              ]);
+            } else {
+              throw fallbackErr;
+            }
+          }
         }
 
         // If learning mode requested, gather educational metadata

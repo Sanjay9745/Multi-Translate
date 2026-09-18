@@ -93,7 +93,10 @@ export class MyMemoryTranslator implements TranslationProvider {
     }
 
     const translated = data.responseData?.translatedText;
-    return translated || text;
+    if (!translated || typeof translated !== 'string' || translated.trim().length === 0) {
+      throw new Error('Empty translation received from MyMemory');
+    }
+    return translated;
   }
 
   async getLearningData(
