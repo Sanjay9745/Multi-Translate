@@ -13,20 +13,20 @@ export const SUPPORTED_LANGUAGES: LanguageInfo[] = [
   // ==========================================
   // TOP GLOBAL POPULAR LANGUAGES
   // ==========================================
-  { code: 'en', name: 'English', nativeName: 'English', flag: '🇬🇧', direction: 'ltr', ttsCode: 'en-US', category: 'popular', popular: true },
-  { code: 'es', name: 'Spanish', nativeName: 'Español', flag: '🇪🇸', direction: 'ltr', ttsCode: 'es-ES', category: 'popular', popular: true },
-  { code: 'fr', name: 'French', nativeName: 'Français', flag: '🇫🇷', direction: 'ltr', ttsCode: 'fr-FR', category: 'popular', popular: true },
-  { code: 'de', name: 'German', nativeName: 'Deutsch', flag: '🇩🇪', direction: 'ltr', ttsCode: 'de-DE', category: 'popular', popular: true },
-  { code: 'it', name: 'Italian', nativeName: 'Italiano', flag: '🇮🇹', direction: 'ltr', ttsCode: 'it-IT', category: 'popular', popular: true },
-  { code: 'pt', name: 'Portuguese', nativeName: 'Português', flag: '🇵🇹', direction: 'ltr', ttsCode: 'pt-PT', category: 'popular', popular: true },
-  { code: 'ru', name: 'Russian', nativeName: 'Русский', flag: '🇷🇺', direction: 'ltr', ttsCode: 'ru-RU', category: 'popular', popular: true },
-  { code: 'zh', name: 'Chinese (Simplified)', nativeName: '简体中文', flag: '🇨🇳', direction: 'ltr', ttsCode: 'zh-CN', category: 'popular', popular: true },
-  { code: 'zh-TW', name: 'Chinese (Traditional)', nativeName: '繁體中文', flag: '🇹🇼', direction: 'ltr', ttsCode: 'zh-TW', category: 'popular', popular: true },
-  { code: 'ja', name: 'Japanese', nativeName: '日本語', flag: '🇯🇵', direction: 'ltr', ttsCode: 'ja-JP', category: 'popular', popular: true },
-  { code: 'ko', name: 'Korean', nativeName: '한국어', flag: '🇰🇷', direction: 'ltr', ttsCode: 'ko-KR', category: 'popular', popular: true },
-  { code: 'ar', name: 'Arabic', nativeName: 'العربية', flag: '🇸🇦', direction: 'rtl', ttsCode: 'ar-SA', category: 'popular', popular: true },
-  { code: 'nl', name: 'Dutch', nativeName: 'Nederlands', flag: '🇳🇱', direction: 'ltr', ttsCode: 'nl-NL', category: 'popular', popular: true },
-  { code: 'tr', name: 'Turkish', nativeName: 'Türkçe', flag: '🇹🇷', direction: 'ltr', ttsCode: 'tr-TR', category: 'popular', popular: true },
+  { code: 'en', name: 'English', nativeName: 'English', flag: '🇬🇧', direction: 'ltr', ttsCode: 'en-US', category: 'european', popular: true },
+  { code: 'es', name: 'Spanish', nativeName: 'Español', flag: '🇪🇸', direction: 'ltr', ttsCode: 'es-ES', category: 'european', popular: true },
+  { code: 'fr', name: 'French', nativeName: 'Français', flag: '🇫🇷', direction: 'ltr', ttsCode: 'fr-FR', category: 'european', popular: true },
+  { code: 'de', name: 'German', nativeName: 'Deutsch', flag: '🇩🇪', direction: 'ltr', ttsCode: 'de-DE', category: 'european', popular: true },
+  { code: 'it', name: 'Italian', nativeName: 'Italiano', flag: '🇮🇹', direction: 'ltr', ttsCode: 'it-IT', category: 'european', popular: true },
+  { code: 'pt', name: 'Portuguese', nativeName: 'Português', flag: '🇵🇹', direction: 'ltr', ttsCode: 'pt-PT', category: 'european', popular: true },
+  { code: 'ru', name: 'Russian', nativeName: 'Русский', flag: '🇷🇺', direction: 'ltr', ttsCode: 'ru-RU', category: 'european', popular: true },
+  { code: 'zh', name: 'Chinese (Simplified)', nativeName: '简体中文', flag: '🇨🇳', direction: 'ltr', ttsCode: 'zh-CN', category: 'asian', popular: true },
+  { code: 'zh-TW', name: 'Chinese (Traditional)', nativeName: '繁體中文', flag: '🇹🇼', direction: 'ltr', ttsCode: 'zh-TW', category: 'asian', popular: true },
+  { code: 'ja', name: 'Japanese', nativeName: '日本語', flag: '🇯🇵', direction: 'ltr', ttsCode: 'ja-JP', category: 'asian', popular: true },
+  { code: 'ko', name: 'Korean', nativeName: '한국어', flag: '🇰🇷', direction: 'ltr', ttsCode: 'ko-KR', category: 'asian', popular: true },
+  { code: 'ar', name: 'Arabic', nativeName: 'العربية', flag: '🇸🇦', direction: 'rtl', ttsCode: 'ar-SA', category: 'middle-eastern', popular: true },
+  { code: 'nl', name: 'Dutch', nativeName: 'Nederlands', flag: '🇳🇱', direction: 'ltr', ttsCode: 'nl-NL', category: 'european', popular: true },
+  { code: 'tr', name: 'Turkish', nativeName: 'Türkçe', flag: '🇹🇷', direction: 'ltr', ttsCode: 'tr-TR', category: 'middle-eastern', popular: true },
 
   // ==========================================
   // INDIAN & SOUTH ASIAN LANGUAGES (ALL MAJOR & SCHEDULED)
@@ -256,9 +256,18 @@ export const LANGUAGE_PRESETS = [
   },
   {
     id: 'european',
-    name: 'European',
+    name: 'All European',
     icon: '🇪🇺',
-    languages: ['en', 'es', 'fr', 'de', 'it', 'pt', 'nl', 'sv', 'pl', 'uk', 'cs', 'da'],
+    languages: [
+      'en', 'es', 'fr', 'de', 'it', 'pt', 'ru', 'nl',
+      'el', 'sv', 'pl', 'uk', 'cs', 'da', 'fi', 'no', 'hu', 'ro', 'bg', 'hr',
+      'sk', 'sr', 'sl', 'lt', 'lv', 'et', 'ca', 'eu', 'gl', 'ga', 'cy', 'is',
+      'sq', 'mk', 'bs', 'be', 'mt', 'lb', 'co', 'fy', 'gd', 'yi', 'eo',
+      'fo', 'sco', 'oc', 'sc', 'rm', 'vec', 'scn', 'nap', 'fur', 'rup', 'ast',
+      'an', 'wa', 'pcd', 'frp', 'cnr', 'rue', 'csb', 'hsb', 'dsb', 'br', 'kw',
+      'gv', 'se', 'sma', 'smn', 'sms', 'fkv', 'fit', 'rom', 'os', 'ba', 'cv',
+      'gag', 'crh', 'kum', 'krc'
+    ],
   },
   {
     id: 'east-asian',

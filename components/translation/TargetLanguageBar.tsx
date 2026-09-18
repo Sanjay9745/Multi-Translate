@@ -132,14 +132,16 @@ export function TargetLanguageBar({
             <span className="text-[11px] font-semibold text-slate-400 flex items-center gap-1 shrink-0">
               <Layers className="w-3 h-3 text-blue-500" /> Presets:
             </span>
-            {LANGUAGE_PRESETS.slice(0, 4).map((preset) => (
+            {LANGUAGE_PRESETS.map((preset) => (
               <button
                 key={preset.id}
                 type="button"
                 onClick={() => applyPreset(preset.languages)}
-                className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/50 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 whitespace-nowrap cursor-pointer text-[11px] font-medium transition-colors"
+                className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-950/50 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 whitespace-nowrap cursor-pointer text-[11px] font-medium transition-colors hover:border-blue-400"
               >
-                {preset.icon} {preset.name}
+                <span>{preset.icon}</span>
+                <span>{preset.name}</span>
+                <span className="text-[10px] text-slate-400 font-mono">({preset.languages.length})</span>
               </button>
             ))}
           </div>

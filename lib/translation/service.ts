@@ -44,8 +44,22 @@ export class TranslationService {
     return TranslationService.instance;
   }
 
-  public getProvider(providerId?: string): TranslationProvider {
+  public getProvider(providerId?: string, customKeys?: TranslationRequest['apiKeys']): TranslationProvider {
     const id = providerId || this.defaultProviderId;
+    if (customKeys) {
+      if (id === 'ai' && (customKeys.gemini || customKeys.openai)) {
+        return new AITranslator(customKeys.gemini, customKeys.openai);
+      }
+      if (id === 'deepl' && customKeys.deepl) {
+        return new DeepLTranslator(customKeys.deepl);
+      }
+      if (id === 'google-cloud' && customKeys.googleCloud) {
+        return new GoogleCloudTranslator(customKeys.googleCloud);
+      }
+      if (id === 'libre' && (customKeys.libreTranslateUrl || customKeys.libreTranslateKey)) {
+        return new LibreTranslator(customKeys.libreTranslateUrl, customKeys.libreTranslateKey);
+      }
+    }
     return this.providers.get(id) || this.providers.get('google-free')!;
   }
 
@@ -61,7 +75,7 @@ export class TranslationService {
    * Employs concurrency throttling, retries, and partial-failure isolation.
    */
   public async translateMultiple(request: TranslationRequest): Promise<TranslationResponse> {
-    const { text, sourceLanguage, targetLanguages, mode = 'quick', provider: requestedProvider } = request;
+    const { text, sourceLanguage, targetLanguages, mode = 'quick', provider: requestedProvider, apiKeys } = request;
 
     if (!text || text.trim().length === 0) {
       throw new Error('Text to translate is required');
@@ -71,7 +85,7 @@ export class TranslationService {
       throw new Error('At least one target language must be selected');
     }
 
-    const provider = this.getProvider(requestedProvider);
+    const provider = this.getProvider(requestedProvider, apiKeys);
     const fallbackProvider = this.providers.get('mymemory')!;
 
     // 1. Detect source language if set to auto
@@ -136,8 +150,10 @@ export class TranslationService {
               ),
             ]);
           } catch (fallbackErr) {
-            console.warn(`Fallback provider failed for ${targetLang}, trying AI provider...`, fallbackErr);
-            const aiProvider = this.providers.get('ai');
+            const aiProvider =
+              apiKeys?.gemini || apiKeys?.openai
+                ? new AITranslator(apiKeys.gemini, apiKeys.openai)
+                : this.providers.get('ai');
             if (aiProvider && aiProvider !== provider) {
               translatedText = await Promise.race([
                 aiProvider.translate(text, effectiveSourceLang, targetLang),

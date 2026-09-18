@@ -15,9 +15,9 @@ export class AITranslator implements TranslationProvider {
   private openAiKey?: string;
   private fallbackProvider: GoogleFreeTranslator;
 
-  constructor() {
-    this.geminiKey = process.env.GEMINI_API_KEY;
-    this.openAiKey = process.env.OPENAI_API_KEY;
+  constructor(geminiKey?: string, openAiKey?: string) {
+    this.geminiKey = geminiKey || process.env.GEMINI_API_KEY;
+    this.openAiKey = openAiKey || process.env.OPENAI_API_KEY;
     this.fallbackProvider = new GoogleFreeTranslator();
   }
 

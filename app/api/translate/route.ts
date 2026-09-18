@@ -30,8 +30,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Limit target languages in single request to 40 for safety and speed
-    const sanitizedTargets = body.targetLanguages.slice(0, 40);
+    // Allow up to 200 target languages in single request
+    const sanitizedTargets = body.targetLanguages.slice(0, 200);
 
     const service = TranslationService.getInstance();
     const result = await service.translateMultiple({
@@ -40,6 +40,7 @@ export async function POST(req: NextRequest) {
       targetLanguages: sanitizedTargets,
       mode: body.mode || 'quick',
       provider: body.provider,
+      apiKeys: body.apiKeys,
     });
 
     return NextResponse.json(result, {

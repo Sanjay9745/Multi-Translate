@@ -14,6 +14,7 @@ const DEFAULT_SETTINGS: UserSettings = {
   ttsSpeed: 1.0,
   saveHistory: true,
   autoTranslateOnPaste: false,
+  apiKeys: {},
 };
 
 export function useSettings() {

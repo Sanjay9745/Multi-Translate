@@ -1,11 +1,21 @@
 export type TranslationMode = 'quick' | 'compare' | 'learning';
 
+export interface UserApiKeys {
+  gemini?: string;
+  openai?: string;
+  googleCloud?: string;
+  deepl?: string;
+  libreTranslateUrl?: string;
+  libreTranslateKey?: string;
+}
+
 export interface TranslationRequest {
   text: string;
   sourceLanguage: string;
   targetLanguages: string[];
   mode?: TranslationMode;
   provider?: string;
+  apiKeys?: UserApiKeys;
 }
 
 export interface LearningDetails {
@@ -81,4 +91,5 @@ export interface UserSettings {
   ttsSpeed: number; // 0.8, 1.0, 1.2
   saveHistory: boolean;
   autoTranslateOnPaste: boolean;
+  apiKeys?: UserApiKeys;
 }

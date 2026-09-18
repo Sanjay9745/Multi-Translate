@@ -15,6 +15,11 @@ import {
   User,
   LogIn,
   RotateCcw,
+  Key,
+  Eye,
+  EyeOff,
+  Save,
+  ExternalLink,
 } from 'lucide-react';
 import { Navbar } from '@/components/layout/Navbar';
 import { MobileBottomNav } from '@/components/layout/MobileBottomNav';
@@ -33,10 +38,66 @@ export default function SettingsPage() {
   const { favorites } = useFavorites();
   const [userProfile, setUserProfile] = useState<{ email: string; name: string } | null>(null);
   const [saveToast, setSaveToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('Settings updated successfully');
 
-  const triggerToast = () => {
+  const [apiKeysInput, setApiKeysInput] = useState({
+    gemini: '',
+    openai: '',
+    deepl: '',
+    googleCloud: '',
+    libreTranslateUrl: '',
+    libreTranslateKey: '',
+  });
+  const [showKeys, setShowKeys] = useState<Record<string, boolean>>({});
+
+  React.useEffect(() => {
+    if (settings.apiKeys) {
+      setApiKeysInput({
+        gemini: settings.apiKeys.gemini || '',
+        openai: settings.apiKeys.openai || '',
+        deepl: settings.apiKeys.deepl || '',
+        googleCloud: settings.apiKeys.googleCloud || '',
+        libreTranslateUrl: settings.apiKeys.libreTranslateUrl || '',
+        libreTranslateKey: settings.apiKeys.libreTranslateKey || '',
+      });
+    }
+  }, [settings.apiKeys]);
+
+  const triggerToast = (msg?: string) => {
+    if (msg) setToastMessage(msg);
     setSaveToast(true);
-    setTimeout(() => setSaveToast(false), 2000);
+    setTimeout(() => setSaveToast(false), 2200);
+  };
+
+  const handleSaveApiKeys = (e: React.FormEvent) => {
+    e.preventDefault();
+    updateSettings({
+      apiKeys: {
+        gemini: apiKeysInput.gemini.trim() || undefined,
+        openai: apiKeysInput.openai.trim() || undefined,
+        deepl: apiKeysInput.deepl.trim() || undefined,
+        googleCloud: apiKeysInput.googleCloud.trim() || undefined,
+        libreTranslateUrl: apiKeysInput.libreTranslateUrl.trim() || undefined,
+        libreTranslateKey: apiKeysInput.libreTranslateKey.trim() || undefined,
+      },
+    });
+    triggerToast('API Keys saved successfully! Engines will now use your credentials.');
+  };
+
+  const handleClearKey = (field: keyof typeof apiKeysInput) => {
+    const updated = { ...apiKeysInput, [field]: '' };
+    setApiKeysInput(updated);
+    updateSettings({
+      apiKeys: {
+        ...settings.apiKeys,
+        [field]: undefined,
+      },
+    });
+    triggerToast(`Cleared custom key for ${field}`);
+  };
+
+  const toggleShowKey = (field: string) => {
+    setShowKeys((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
   const handleToggleTargetLang = (code: string) => {
@@ -313,6 +374,258 @@ export default function SettingsPage() {
           </div>
         </section>
 
+        {/* 4.1 Custom API Keys Configuration */}
+        <section className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 space-y-4 shadow-xs">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
+            <div className="flex items-center gap-2">
+              <Key className="w-4 h-4 text-amber-500" />
+              <div>
+                <h2 className="font-semibold text-sm text-slate-900 dark:text-white">
+                  Custom API Keys & Credentials
+                </h2>
+                <p className="text-[11px] text-slate-400">
+                  Override default server environment variables with your personal API keys
+                </p>
+              </div>
+            </div>
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+              Stored in LocalStorage
+            </span>
+          </div>
+
+          <form onSubmit={handleSaveApiKeys} className="space-y-4">
+            {/* Google Gemini Key */}
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                  <span>Google Gemini API Key</span>
+                  <span className="text-[10px] font-normal text-slate-400">(For AI Translator & Learning Mode)</span>
+                </label>
+                <a
+                  href="https://aistudio.google.com/app/apikey"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-0.5"
+                >
+                  <span>Get Free Key</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+              <div className="relative flex items-center">
+                <input
+                  type={showKeys.gemini ? 'text' : 'password'}
+                  value={apiKeysInput.gemini}
+                  onChange={(e) => setApiKeysInput({ ...apiKeysInput, gemini: e.target.value })}
+                  placeholder="AIzaSy..."
+                  className="w-full pl-3 pr-20 py-2 text-xs font-mono rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <div className="absolute right-2 flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => toggleShowKey('gemini')}
+                    className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+                    title={showKeys.gemini ? 'Hide key' : 'Show key'}
+                  >
+                    {showKeys.gemini ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                  </button>
+                  {apiKeysInput.gemini && (
+                    <button
+                      type="button"
+                      onClick={() => handleClearKey('gemini')}
+                      className="text-[10px] text-red-500 hover:underline px-1 cursor-pointer"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* OpenAI Key */}
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                  <span>OpenAI API Key</span>
+                  <span className="text-[10px] font-normal text-slate-400">(Alternative for AI Translator)</span>
+                </label>
+                <a
+                  href="https://platform.openai.com/api-keys"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-0.5"
+                >
+                  <span>OpenAI Dashboard</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+              <div className="relative flex items-center">
+                <input
+                  type={showKeys.openai ? 'text' : 'password'}
+                  value={apiKeysInput.openai}
+                  onChange={(e) => setApiKeysInput({ ...apiKeysInput, openai: e.target.value })}
+                  placeholder="sk-..."
+                  className="w-full pl-3 pr-20 py-2 text-xs font-mono rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <div className="absolute right-2 flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => toggleShowKey('openai')}
+                    className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+                    title={showKeys.openai ? 'Hide key' : 'Show key'}
+                  >
+                    {showKeys.openai ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                  </button>
+                  {apiKeysInput.openai && (
+                    <button
+                      type="button"
+                      onClick={() => handleClearKey('openai')}
+                      className="text-[10px] text-red-500 hover:underline px-1 cursor-pointer"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* DeepL Key */}
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+                  <span>DeepL API Key</span>
+                  <span className="text-[10px] font-normal text-slate-400">(Supports free :fx or pro keys)</span>
+                </label>
+                <a
+                  href="https://www.deepl.com/pro-api"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-0.5"
+                >
+                  <span>DeepL Account</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+              <div className="relative flex items-center">
+                <input
+                  type={showKeys.deepl ? 'text' : 'password'}
+                  value={apiKeysInput.deepl}
+                  onChange={(e) => setApiKeysInput({ ...apiKeysInput, deepl: e.target.value })}
+                  placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx:fx"
+                  className="w-full pl-3 pr-20 py-2 text-xs font-mono rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <div className="absolute right-2 flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => toggleShowKey('deepl')}
+                    className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+                    title={showKeys.deepl ? 'Hide key' : 'Show key'}
+                  >
+                    {showKeys.deepl ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                  </button>
+                  {apiKeysInput.deepl && (
+                    <button
+                      type="button"
+                      onClick={() => handleClearKey('deepl')}
+                      className="text-[10px] text-red-500 hover:underline px-1 cursor-pointer"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Google Cloud Translate API Key */}
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                  Google Cloud Translation API v2 Key
+                </label>
+                <a
+                  href="https://cloud.google.com/translate"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-0.5"
+                >
+                  <span>GCP Console</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </div>
+              <div className="relative flex items-center">
+                <input
+                  type={showKeys.googleCloud ? 'text' : 'password'}
+                  value={apiKeysInput.googleCloud}
+                  onChange={(e) => setApiKeysInput({ ...apiKeysInput, googleCloud: e.target.value })}
+                  placeholder="AIzaSy..."
+                  className="w-full pl-3 pr-20 py-2 text-xs font-mono rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <div className="absolute right-2 flex items-center gap-1">
+                  <button
+                    type="button"
+                    onClick={() => toggleShowKey('googleCloud')}
+                    className="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 cursor-pointer"
+                    title={showKeys.googleCloud ? 'Hide key' : 'Show key'}
+                  >
+                    {showKeys.googleCloud ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                  </button>
+                  {apiKeysInput.googleCloud && (
+                    <button
+                      type="button"
+                      onClick={() => handleClearKey('googleCloud')}
+                      className="text-[10px] text-red-500 hover:underline px-1 cursor-pointer"
+                    >
+                      Clear
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* LibreTranslate Host URL & Key */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                  LibreTranslate URL
+                </label>
+                <input
+                  type="text"
+                  value={apiKeysInput.libreTranslateUrl}
+                  onChange={(e) => setApiKeysInput({ ...apiKeysInput, libreTranslateUrl: e.target.value })}
+                  placeholder="https://libretranslate.com"
+                  className="w-full px-3 py-2 text-xs font-mono rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                  LibreTranslate API Key (Optional)
+                </label>
+                <input
+                  type={showKeys.libreTranslateKey ? 'text' : 'password'}
+                  value={apiKeysInput.libreTranslateKey}
+                  onChange={(e) => setApiKeysInput({ ...apiKeysInput, libreTranslateKey: e.target.value })}
+                  placeholder="Optional API key..."
+                  className="w-full px-3 py-2 text-xs font-mono rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+
+            {/* Save Buttons */}
+            <div className="pt-2 flex items-center justify-between">
+              <p className="text-[11px] text-slate-400">
+                Leave inputs blank to use default public endpoints or server environment variables.
+              </p>
+              <button
+                type="submit"
+                className="flex items-center gap-2 px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-semibold text-xs shadow-md transition-all cursor-pointer"
+              >
+                <Save className="w-3.5 h-3.5" />
+                <span>Save API Credentials</span>
+              </button>
+            </div>
+          </form>
+        </section>
+
         {/* 5. Speech & Audio Controls */}
         <section className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 space-y-4 shadow-xs">
           <div className="flex items-center gap-2 pb-2 border-b border-slate-100 dark:border-slate-800">
@@ -411,7 +724,7 @@ export default function SettingsPage() {
         {saveToast && (
           <div className="fixed bottom-20 md:bottom-6 right-6 z-50 bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2 text-xs font-semibold animate-in fade-in duration-200">
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>Settings updated successfully</span>
+            <span>{toastMessage}</span>
           </div>
         )}
       </main>

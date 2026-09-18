@@ -61,6 +61,7 @@ export default function HomePage() {
           targetLanguages,
           mode,
           provider: settings.preferredProvider,
+          apiKeys: settings.apiKeys,
         }),
       });
 
@@ -135,6 +136,7 @@ export default function HomePage() {
           targetLanguages: [langCode],
           mode,
           provider: settings.preferredProvider,
+          apiKeys: settings.apiKeys,
         }),
       });
 
